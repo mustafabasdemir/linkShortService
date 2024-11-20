@@ -1,31 +1,49 @@
 ﻿using LinkShortener.Core.Entities;
-using LinkShortener.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
 public class LinkController : ControllerBase
 {
-    private readonly LinkShortDbContext _context;
+    private readonly ILinkService _linkService;
 
-    public LinkController(LinkShortDbContext context)
+    public LinkController(ILinkService linkService)
     {
-        _context = context;
+        _linkService = linkService;
     }
 
+    // Tüm linkleri listele
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var links = await _context.Links.ToListAsync();
+        var links = await _linkService.GetAllLinksAsync();
         return Ok(links);
     }
 
+    // Link ekle
     [HttpPost]
-    public async Task<IActionResult> Create(Link link)
+    public async Task<IActionResult> Create([FromBody] Link link)
     {
-        _context.Links.Add(link);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetAll), new { id = link.Id }, link);
+        if (link == null)
+        {
+            return BadRequest("Link verisi boş olamaz.");
+        }
+
+        var createdLink = await _linkService.CreateLinkAsync(link);
+        return CreatedAtAction(nameof(GetAll), new { id = createdLink.Id }, createdLink);
+    }
+
+    // Link sil
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deletedLink = await _linkService.DeleteLinkAsync(id);
+
+        if (deletedLink == null)
+        {
+            return NotFound("Link bulunamadı.");
+        }
+
+        return NoContent();
     }
 }

@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LinkShortener.Core\LinkShortener.Core.csproj" />
     <ProjectReference Include="..\LinkShortener.Data\LinkShortener.Data.csproj" />
+    <ProjectReference Include="..\LinkShortener.Service\LinkShortener.Service.csproj" />
   </ItemGroup>
 
 </Project>
