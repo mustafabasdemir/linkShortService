@@ -52,9 +52,9 @@ public class LinkController : ControllerBase
     {
         var decodedUrl = Uri.UnescapeDataString(shortCode);
 
-        // URL'nin son segmentini al
+        // URL son kismi al
         var uri = new Uri(decodedUrl);
-        var extractedShortCode = uri.Segments.Last(); // URL'nin son parçasını al
+        var extractedShortCode = uri.Segments.Last();
 
         // Veritabanında kısa kodu ara
         var link = await _linkService.GetLinkByShortCodeAsync(extractedShortCode);
@@ -63,8 +63,6 @@ public class LinkController : ControllerBase
         {
             return NotFound("Kısa URL bulunamadı.");
         }
-
-        // Kullanıcıyı orijinal URL'ye yönlendir
         return Ok(link.OriginalUrl);
     }
 }

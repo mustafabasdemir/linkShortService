@@ -1,6 +1,9 @@
 ﻿using LinkShortener.Core.Entities;
 using LinkShortener.Core.Services.Interfaces;
+using LinkShortener.Service.Interfaces;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using LinkShortener.Core.DTOs;
 
 namespace LinkShortener.Api.Controllers
 {
@@ -8,11 +11,12 @@ namespace LinkShortener.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly ITokenService _tokenService;
         private readonly IUserService _userService;
 
-
-        public UserController(IUserService userService)
+        public UserController(ITokenService tokenService, IUserService userService)
         {
+            _tokenService = tokenService;
             _userService = userService;
         }
 
@@ -33,10 +37,9 @@ namespace LinkShortener.Api.Controllers
                 return BadRequest("Kullanıcı verisi boş olamaz.");
             }
 
-            // Links koleksiyonunu boş bırakıyoruz
+            // Links yollama gerek yok bos yolla
             user.Links = new List<Link>();
 
-            // Kullanıcıyı veritabanına ekle
             await _userService.AddUserAsync(user);
 
             return Ok(user);
@@ -62,6 +65,57 @@ namespace LinkShortener.Api.Controllers
             }
 
             return Ok(userLinks);
+        }
+
+        // login işlemi
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] Core.DTOs.LoginRequest request)
+        {
+            var user = await _userService.GetUserByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return Unauthorized("Kullanıcı bulunamadı.");
+            }
+
+            var isPasswordValid = await _userService.VerifyPasswordAsync(user, request.Password);
+
+            if (!isPasswordValid)
+            {
+                return Unauthorized("Geçersiz şifre.");
+            }
+
+            var token = _tokenService.GenerateToken(user);
+
+            return Ok(new { Token = token });
+        }
+
+        // Token doğrulama (JWT)
+        [HttpPost("validate-token")]
+        public IActionResult ValidateToken([FromBody] string token)
+        {
+            var isValid = _tokenService.ValidateToken(token);
+
+            if (!isValid)
+            {
+                return Unauthorized("Geçersiz token.");
+            }
+
+            return Ok("Token geçerli.");
+        }
+
+        // Token çözümle
+        [HttpPost("decode-token")]
+        public IActionResult DecodeToken([FromBody] string token)
+        {
+            var user = _tokenService.DecodeToken(token);
+
+            if (user == null)
+            {
+                return Unauthorized("Geçersiz token.");
+            }
+
+            return Ok(user);
         }
 
     }

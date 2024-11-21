@@ -26,16 +26,14 @@ public class LinkService : ILinkService
             throw new ArgumentException("Orijinal URL boş olamaz.");
         }
 
-        // 1. Benzersiz bir kısa URL üret
+        // kısa url uret
         string shortCode = GenerateShortCode(link.OriginalUrl);
-        string apiBaseUrl = "https://localhost:7256/"; // API'nin temel URL'si
+        string apiBaseUrl = "https://localhost:7256/"; // API urlsi
         link.ShortUrl = $"{apiBaseUrl}{shortCode}";
 
-        // 2. Veritabanına kaydet
         _context.Links.Add(link);
         await _context.SaveChangesAsync();
 
-        // 3. Kayıt edilen linki döndür
         return link;
     }
 
@@ -56,7 +54,6 @@ public class LinkService : ILinkService
 
     private string GenerateShortCode(string originalUrl)
     {
-        // Basit bir hash algoritması örneği
         using (var sha256 = System.Security.Cryptography.SHA256.Create())
         {
             byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(originalUrl + DateTime.UtcNow));
@@ -64,7 +61,7 @@ public class LinkService : ILinkService
                 .Replace("+", "")
                 .Replace("/", "")
                 .Replace("=", "")
-                .Substring(0, 8); // 8 karakterlik kısa bir kod
+                .Substring(0, 8); //kısa url 8 karakter olsun hash şle
         }
     }
 

@@ -2,6 +2,8 @@ using LinkShortener.Core.Services.Interfaces;
 using LinkShortener.Core.Services;
 using LinkShortener.Data;
 using Microsoft.EntityFrameworkCore;
+using LinkShortener.Service.Interfaces;
+using LinkShortener.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddDbContext<LinkShortDbContext>(options =>
 // Add services to the container.
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILinkService, LinkService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

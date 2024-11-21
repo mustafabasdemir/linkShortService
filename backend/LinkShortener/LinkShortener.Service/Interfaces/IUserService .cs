@@ -7,6 +7,8 @@ namespace LinkShortener.Core.Services.Interfaces
         Task<IEnumerable<User>> GetAllUsersAsync(); 
         Task AddUserAsync(User user);           
         Task DeleteUserAsync(int id);             
-        Task<List<Link>> GetLinksByUserIdAsync(int userId); 
+        Task<List<Link>> GetLinksByUserIdAsync(int userId);
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<bool> VerifyPasswordAsync(User user, string password);
     }
 }

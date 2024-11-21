@@ -1,6 +1,7 @@
 ﻿using LinkShortener.Core.Entities;
 using LinkShortener.Core.Services.Interfaces;
 using LinkShortener.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkShortener.Core.Services
@@ -21,6 +22,9 @@ namespace LinkShortener.Core.Services
 
         public async Task AddUserAsync(User user)
         {
+            var passwordHasher = new PasswordHasher<User>(); //password hash
+            user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
+
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
@@ -42,5 +46,21 @@ namespace LinkShortener.Core.Services
                 .ToListAsync();
             return userLinks;
         }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
+        // Şifre doğrulama
+        public async Task<bool> VerifyPasswordAsync(User user, string password)
+        {
+            var passwordHasher = new PasswordHasher<User>();
+            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+            return result == PasswordVerificationResult.Success;
+        }
+
+
+
     }
 }
