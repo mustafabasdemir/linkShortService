@@ -46,4 +46,25 @@ public class LinkController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("{shortCode}")]
+    public async Task<IActionResult> RedirectToOriginal(string shortCode)
+    {
+        var decodedUrl = Uri.UnescapeDataString(shortCode);
+
+        // URL'nin son segmentini al
+        var uri = new Uri(decodedUrl);
+        var extractedShortCode = uri.Segments.Last(); // URL'nin son parçasını al
+
+        // Veritabanında kısa kodu ara
+        var link = await _linkService.GetLinkByShortCodeAsync(extractedShortCode);
+
+        if (link == null)
+        {
+            return NotFound("Kısa URL bulunamadı.");
+        }
+
+        // Kullanıcıyı orijinal URL'ye yönlendir
+        return Ok(link.OriginalUrl);
+    }
 }
