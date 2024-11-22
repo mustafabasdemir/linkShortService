@@ -2,6 +2,7 @@
 using LinkShortener.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using YourProject.Services.ErrorHandling;
 
 public class LinkService : ILinkService
 {
@@ -15,7 +16,14 @@ public class LinkService : ILinkService
     // Tüm Linkleri getir
     public async Task<List<Link>> GetAllLinksAsync()
     {
-        return await _context.Links.ToListAsync();
+        var links = await _context.Links.ToListAsync();
+
+        if (links == null || !links.Any())
+        {
+            ExceptionHelper.ThrowError(ErrorMessages.LinksNotFound);
+        }
+
+        return links;
     }
 
     // Link ekle
@@ -23,16 +31,23 @@ public class LinkService : ILinkService
     {
         if (string.IsNullOrEmpty(link.OriginalUrl))
         {
-            throw new ArgumentException("Orijinal URL boş olamaz.");
+            ExceptionHelper.ThrowError(ErrorMessages.OriginalUrlEmpty);
         }
 
         // kısa url uret
         string shortCode = GenerateShortCode(link.OriginalUrl);
-        string apiBaseUrl = "https://localhost:7256/"; // API urlsi
+        string apiBaseUrl = "https://localhost:7256/r/";
         link.ShortUrl = $"{apiBaseUrl}{shortCode}";
 
-        _context.Links.Add(link);
-        await _context.SaveChangesAsync();
+        try
+        {
+            _context.Links.Add(link);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            ExceptionHelper.ThrowError(ErrorMessages.InternalServerError);
+        }
 
         return link;
     }
@@ -44,9 +59,8 @@ public class LinkService : ILinkService
 
         if (link == null)
         {
-            return null;
+            ExceptionHelper.ThrowError(ErrorMessages.LinkNotFound);
         }
-
         _context.Links.Remove(link);
         await _context.SaveChangesAsync();
         return link;
@@ -67,6 +81,11 @@ public class LinkService : ILinkService
 
     public async Task<Link?> GetLinkByShortCodeAsync(string shortCode)
     {
-        return await _context.Links.FirstOrDefaultAsync(l => l.ShortUrl.EndsWith(shortCode));
+        var link= await _context.Links.FirstOrDefaultAsync(l => l.ShortUrl.EndsWith(shortCode));
+        if (link == null)
+        {
+            ExceptionHelper.ThrowError(ErrorMessages.InvalidShortCode);
+        }
+        return link;
     }
 }

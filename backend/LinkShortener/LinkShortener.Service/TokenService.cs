@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using YourProject.Services.ErrorHandling;
 
 public class TokenService : ITokenService
 {
@@ -18,6 +19,11 @@ public class TokenService : ITokenService
     // Token olsutur
     public string GenerateToken(User user)
     {
+        if (user == null)
+        {
+            ExceptionHelper.ThrowError(ErrorMessages.UserNotFound);
+        }
+
         var claims = new[]
         {
             //token içine gerekli bilgileri ekl
@@ -25,13 +31,12 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) 
         };
 
-
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             issuer: "shorts-Link", 
             audience: "react-shorts-link", 
-            claims: claims, // Claim'ler
+            claims: claims,
             expires: DateTime.Now.AddDays(1), // 1 saat gecerli yeterr
             signingCredentials: creds 
         );
@@ -44,6 +49,13 @@ public class TokenService : ITokenService
     {
         try
         {
+            if (string.IsNullOrEmpty(token))
+            {
+                // Token null
+                ExceptionHelper.ThrowError(ErrorMessages.InvalidTokenFormat); 
+                return false;
+            }
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]);
             var validationParameters = new TokenValidationParameters
@@ -56,16 +68,33 @@ public class TokenService : ITokenService
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };
 
+            // Token dogrulşa
             tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
-            return true; // Token geçerli
+            return true;
         }
-        catch
+        catch (SecurityTokenExpiredException)
         {
+            ExceptionHelper.ThrowError(ErrorMessages.ExpiredToken);
+            return false;
+        }
+        catch (SecurityTokenException)
+        {
+            ExceptionHelper.ThrowError(ErrorMessages.InvalidToken); 
+            return false;
+        }
+        catch (ArgumentException)
+        {
+            ExceptionHelper.ThrowError(ErrorMessages.InvalidTokenFormat); 
+            return false;
+        }
+        catch (Exception)
+        {
+            ExceptionHelper.ThrowError(ErrorMessages.InternalServerError);
             return false;
         }
     }
 
-    // Token çözelim
+    // Token cozelım
     public User? DecodeToken(string token)
     {
         try
@@ -76,10 +105,9 @@ public class TokenService : ITokenService
 
             if (validatedToken == null)
             {
-                return null;
+                ExceptionHelper.ThrowError(ErrorMessages.InvalidTokenFormat);
             }
 
-            // Token icindeki mail ve id yi alalım bi sey lazım olursa bak
             var userEmail = validatedToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             var userId = validatedToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -88,17 +116,18 @@ public class TokenService : ITokenService
                 var user = new User
                 {
                     Email = userEmail,
-                    Id = int.Parse(userId) 
+                    Id = int.Parse(userId)
                 };
                 return user;
             }
-
-            return null;
+            ExceptionHelper.ThrowError(ErrorMessages.InvalidToken);
         }
         catch
         {
-            return null;
+            ExceptionHelper.ThrowError(ErrorMessages.InvalidToken);
         }
+
+        return null;
     }
 
 }
