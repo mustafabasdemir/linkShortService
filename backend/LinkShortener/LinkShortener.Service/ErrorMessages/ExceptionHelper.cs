@@ -1,28 +1,26 @@
-﻿
-
+﻿using LinkShortener.Core.Entities;
 using Microsoft.Extensions.Logging;
 
-namespace YourProject.Services.ErrorHandling
+namespace LinkShortener.Services.ErrorHandling
 {
     public static class ExceptionHelper
     {
-        private static readonly ILogger _logger = LoggerFactory.Create(builder =>
-                builder.AddConsole().SetMinimumLevel(LogLevel.Information)).CreateLogger("ExceptionHelper");
+        private static ILogService? _logService;
+
+        public static void Configure(ILogService logService)
+        {
+            _logService = logService;
+        }
 
 
         public static void ThrowError(ErrorDetail error)
         {
             // Loglama
-            LogError(error);
-
-            // Hata fırlatma
+            _logService?.LogError(error.Status, $"Error Code: {error.StatusCode}, Message: {error.Message}");
+            // Hata firlat
             throw new CustomException(error.StatusCode, error.Message,error.Status);
         }
 
-        private static void LogError(ErrorDetail error)
-        {
-            _logger.LogError($"error code: {error.StatusCode}, message: {error.Message},status: {error.Status}, date: {DateTime.Now}");
-        }
     }
 
     public class CustomException : Exception

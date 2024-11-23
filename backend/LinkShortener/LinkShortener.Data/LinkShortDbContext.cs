@@ -9,7 +9,7 @@ namespace LinkShortener.Data
 
         public DbSet<User> Users { get; set; } // User tablosu
         public DbSet<Link> Links { get; set; } // Link tablosu
-        public DbSet<Log> Logs { get; set; } // Log tablosu
+        public DbSet<LogEntry> Logs { get; set; } // Log tablosu
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

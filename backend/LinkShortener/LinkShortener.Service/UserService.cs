@@ -3,7 +3,7 @@ using LinkShortener.Core.Services.Interfaces;
 using LinkShortener.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using YourProject.Services.ErrorHandling;
+using LinkShortener.Services.ErrorHandling;
 
 namespace LinkShortener.Core.Services
 {

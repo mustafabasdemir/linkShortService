@@ -1,4 +1,4 @@
-﻿namespace YourProject.Services.ErrorHandling
+﻿namespace LinkShortener.Services.ErrorHandling
 {
     public static class ErrorMessages
     {

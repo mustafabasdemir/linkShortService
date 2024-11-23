@@ -2,7 +2,7 @@
 using LinkShortener.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
-using YourProject.Services.ErrorHandling;
+using LinkShortener.Services.ErrorHandling;
 
 public class LinkService : ILinkService
 {
