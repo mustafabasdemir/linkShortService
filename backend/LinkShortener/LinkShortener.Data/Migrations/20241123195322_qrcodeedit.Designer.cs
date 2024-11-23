@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LinkShortener.Data.Migrations
 {
     [DbContext(typeof(LinkShortDbContext))]
-    [Migration("20241119200827_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241123195322_qrcodeedit")]
+    partial class qrcodeedit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace LinkShortener.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("QrCodeImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ShortUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -54,7 +57,7 @@ namespace LinkShortener.Data.Migrations
                     b.ToTable("Links");
                 });
 
-            modelBuilder.Entity("LinkShortener.Core.Entities.Log", b =>
+            modelBuilder.Entity("LinkShortener.Core.Entities.LogEntry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

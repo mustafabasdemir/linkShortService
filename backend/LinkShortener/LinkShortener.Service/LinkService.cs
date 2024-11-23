@@ -3,6 +3,8 @@ using LinkShortener.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using LinkShortener.Services.ErrorHandling;
+using QRCoder;
+
 
 public class LinkService : ILinkService
 {
@@ -38,7 +40,9 @@ public class LinkService : ILinkService
         string shortCode = GenerateShortCode(link.OriginalUrl);
         string apiBaseUrl = "https://localhost:7256/r/";
         link.ShortUrl = $"{apiBaseUrl}{shortCode}";
-
+        //qr kod 
+        string qrCodeBase64 = GenerateQrCode(link.ShortUrl);
+        link.QrCodeImage = qrCodeBase64;
         try
         {
             _context.Links.Add(link);
@@ -88,4 +92,31 @@ public class LinkService : ILinkService
         }
         return link;
     }
+
+
+
+    //qr kod olustur
+    private string GenerateQrCode(string url)
+    {
+        using (var qrGenerator = new QRCodeGenerator())
+        {
+            // QRCodeData'yı oluşturuyoruz
+            var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+
+            // QR kodu grafik olarak alıyoruz
+            using (var qrCode = new QRCode(qrCodeData))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    // QR kodunu PNG formatında hafızaya yazıyoruz
+                    qrCode.GetGraphic(20).Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+
+                    var qrCodeBytes = ms.ToArray();
+                    return Convert.ToBase64String(qrCodeBytes); // Base64 formatında döndürüyoruz
+                }
+            }
+        }
+    }
 }
+
+

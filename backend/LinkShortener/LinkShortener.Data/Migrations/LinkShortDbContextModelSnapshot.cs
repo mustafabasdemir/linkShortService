@@ -37,6 +37,9 @@ namespace LinkShortener.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("QrCodeImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ShortUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -51,7 +54,7 @@ namespace LinkShortener.Data.Migrations
                     b.ToTable("Links");
                 });
 
-            modelBuilder.Entity("LinkShortener.Core.Entities.Log", b =>
+            modelBuilder.Entity("LinkShortener.Core.Entities.LogEntry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
