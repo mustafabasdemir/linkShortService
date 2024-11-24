@@ -13,11 +13,14 @@ namespace LinkShortener.Api.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService; // NotificationService'i burada enjekte ettik
 
-        public UserController(ITokenService tokenService, IUserService userService)
+        // Constructor'a NotificationService'i ekliyoruz
+        public UserController(ITokenService tokenService, IUserService userService, INotificationService notificationService)
         {
             _tokenService = tokenService;
             _userService = userService;
+            _notificationService = notificationService; // NotificationService'in bağımlılığını alıyoruz
         }
 
         // Kullanıcı Listeleme
@@ -84,6 +87,20 @@ namespace LinkShortener.Api.Controllers
             {
                 return Unauthorized("Geçersiz şifre.");
             }
+
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "IP Alınamadı";
+            var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+
+            // cihaz kontorluk
+            var hasDeviceChanged = await _userService.HasUserDeviceChangedAsync(user.Id, ipAddress, userAgent);
+            if (hasDeviceChanged)
+            {
+                //cihaz değiştiryse mail gidecek
+                _notificationService.SendDeviceChangeEmail(user.Email, ipAddress, userAgent);
+            }
+
+            //cihazı vt ye kaydet
+            await _userService.SaveLoginHistoryAsync(user.Id, ipAddress, userAgent);
 
             var token = _tokenService.GenerateToken(user);
 

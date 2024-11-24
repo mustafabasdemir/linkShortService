@@ -97,6 +97,56 @@ namespace LinkShortener.Core.Services
         }
 
 
+        //giriş cihaz bilgileri
+        public async Task SaveLoginHistoryAsync(int userId, string ipAddress, string userAgent)
+        {
+            var loginHistory = new UserLoginHistory
+            {
+                UserId = userId,
+                IPAddress = ipAddress,
+                BrowserInfo = userAgent,
+                DeviceType = GetDeviceType(userAgent),
+                LoginTime = DateTime.UtcNow
+            };
+
+            _context.UserLoginHistories.Add(loginHistory);
+            await _context.SaveChangesAsync();
+        }
+
+        private string GetDeviceType(string userAgent)
+        {
+            if (userAgent.Contains("Android")) return "Android";
+            if (userAgent.Contains("iPhone")) return "iPhone";
+            if (userAgent.Contains("iPad")) return "iPad";
+            if (userAgent.Contains("Windows")) return "Windows";
+            return "Bilinmeyen Cihaz";
+        }
+
+        public async Task<bool> HasUserDeviceChangedAsync(int userId, string ipAddress, string userAgent)
+        {
+            var lastLogin = await _context.UserLoginHistories
+                .Where(lh => lh.UserId == userId)
+                .OrderByDescending(lh => lh.LoginTime)
+                .FirstOrDefaultAsync();
+
+            if (lastLogin == null)
+            {
+                // İlk kez giris yapanlar içinde gitsin
+                return true;
+            }
+
+            var currentDeviceType = GetDeviceType(userAgent);
+
+            // cihaz farklıysa gıdecek
+            if (lastLogin.IPAddress != ipAddress ||
+                lastLogin.DeviceType != currentDeviceType ||
+                lastLogin.BrowserInfo != userAgent)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
     }
 }

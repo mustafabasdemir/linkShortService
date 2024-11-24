@@ -10,5 +10,7 @@ namespace LinkShortener.Core.Services.Interfaces
         Task<List<Link>> GetLinksByUserIdAsync(int userId);
         Task<User?> GetUserByEmailAsync(string email);
         Task<bool> VerifyPasswordAsync(User user, string password);
+        Task SaveLoginHistoryAsync(int userId, string ipAddress, string userAgent);
+        Task<bool> HasUserDeviceChangedAsync(int userId, string ipAddress, string userAgent);
     }
 }

@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILinkService, LinkService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 
 
