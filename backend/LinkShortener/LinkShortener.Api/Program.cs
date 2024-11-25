@@ -6,14 +6,10 @@ using LinkShortener.Service.Interfaces;
 using LinkShortener.Service;
 using LinkShortener.Core.Entities;
 using Serilog;
+using LinkShortener.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Host.UseSerilog((context, config) =>
-{
-    config.ReadFrom.Configuration(context.Configuration);
-});
 
 // Serilog
 builder.Host.UseSerilog((context, config) =>
@@ -42,6 +38,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseMiddleware<ErrorMiddleware>();
 
 
 // Configure the HTTP request pipeline.

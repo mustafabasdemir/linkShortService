@@ -15,8 +15,6 @@ namespace LinkShortener.Services.ErrorHandling
 
         public static void ThrowError(ErrorDetail error)
         {
-            // Loglama
-            _logService?.LogError(error.Status, $"Error Code: {error.StatusCode}, Message: {error.Message}");
             // Hata firlat
             throw new CustomException(error.StatusCode, error.Message,error.Status);
         }
