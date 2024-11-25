@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body{
+  background-image: url("../public/5096909.jpg");
+}
