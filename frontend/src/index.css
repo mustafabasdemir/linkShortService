@@ -3,8 +3,25 @@
 @tailwind utilities;
 
 
-body{
+body {
   background-image: url("../public/5096909.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Görselin kaymasını önlemek için */
+  margin: 0;
+  height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Siyah filtre, opaklık ayarı */
+  z-index: -1; /* Bu katman body'nin arkasında kalır */
 }
 
 /* Custom scrollbar styles */
