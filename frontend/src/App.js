@@ -1,4 +1,9 @@
 import { FaLink } from "react-icons/fa";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaRegCopy } from "react-icons/fa";
+import { MdDeleteSweep } from "react-icons/md";
+import { CiCoffeeCup } from "react-icons/ci";
+
 
 function App() {
   return (
@@ -70,8 +75,32 @@ function App() {
 
             {/* Sağ Sütun */}
             <div className="flex flex-col gap-4 w-[80%] h-full">
+              {/* gif */}
+              <div
+                className="absolute h-[14%] right-4  top-[15%]"
+                style={{
+                  maskImage: "polygon(0% 0%, 100% 0%, 100% 15%, 90.33% 15%, 90.33% 32.86%, 100% 32.86%, 100% 100%, 0% 100%)",
+                  WebkitMaskImage:
+                    "polygon(0% 0%, 100% 0%, 100% 15%, 90.33% 15%, 90.33% 32.86%, 100% 32.86%, 100% 100%, 0% 100%)",
+                  overflow: "hidden",
+                }}
+              >
+                <img
+                  src="/bfR.gif" // Buraya GIF URL'nizi ekleyin
+                  alt="Polygon GIF"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {/* gif son */}
               {/* ikinci Kutu */}
-              <div className="w-full h-[80%] bg-white/70 rounded-lg shadow-md flex flex-col items-center justify-start">
+              <div className="w-full h-[85%] bg-white/70 rounded-lg shadow-md flex flex-col items-center justify-start"
+              style={{
+                clipPath:
+                  "polygon(0% 0%, 100% 0%, 100% 15%, 92% 15%, 92% 32%, 100% 32%, 100% 100%, 0% 100%)",
+              }}
+            >
+
+
                 <div className="mt-4 text-center text-lg font-semibold">
                   <span className="text-3xl text-blue-500">Shorten your</span>
                   <span className="text-3xl text-orange-500"> loooooong </span>
@@ -80,7 +109,7 @@ function App() {
                 </div>
 
                 {/* Form Kısmı */}
-                <form className="max-w-md w-full mt-8">
+                <form className="max-w-lg w-full mt-8">
                   <label
                     htmlFor="default-search"
                     className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -94,8 +123,8 @@ function App() {
                     <input
                       type="search"
                       id="default-search"
-                      className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Your long url : www.site.com/pages/about/...."
+                      className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Your long url : www.site.com/detailpages/shop/about/...."
                       required
                     />
                     <button
@@ -111,12 +140,163 @@ function App() {
                   <span className="text-lg text-orange-500">here are your shortened url's 😍 </span>
                 </div>
 
+
+
+                <div
+                  className="grid grid-cols-2 gap-4 mt-4 w-full max-w-4xl h-full overflow-y-auto px-4 custom-scrollbar pb-8"
+                  style={{ alignSelf: 'center' }}
+                >
+                  {/* Card 1 */}
+                  <div className="h-[80%] flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row">
+                    <img
+                      className="h-12 md:h-auto sm:w-28 p-2"
+                      src="https://via.placeholder.com/150"
+                      alt="qrcode"
+                    />
+                    <div className="flex flex-col justify-between p-4 leading-normal">
+                      <p className="mb-2 text-lg font-bold tracking-tight text-gray-900">
+                        Shortened URL #1
+                      </p>
+                      <p className="mb-3 font-bold text-blue-500 flex items-center gap-1">
+                        Example of a shortened link
+                        <FaExternalLinkAlt />
+                      </p>
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <span>27.11.2024</span>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><FaRegCopy /> Copy </button>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><MdDeleteSweep /> Delete</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 2 */}
+                  <div className="h-[80%] flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row">
+                    <img
+                      className="h-12 md:h-auto sm:w-28 p-2"
+                      src="https://via.placeholder.com/150"
+                      alt="qrcode"
+                    />
+                    <div className="flex flex-col justify-between p-4 leading-normal">
+                      <p className="mb-2 text-lg font-bold tracking-tight text-gray-900">
+                        Shortened URL #2
+                      </p>
+                      <p className="mb-3 font-bold text-blue-500 flex items-center gap-1">
+                        Example of a shortened link
+                        <FaExternalLinkAlt />
+                      </p>
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <span>27.11.2024</span>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><FaRegCopy /> Copy </button>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><MdDeleteSweep /> Delete</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 3 */}
+                  <div className="h-[80%] flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row">
+                    <img
+                      className="h-12 md:h-auto sm:w-28 p-2"
+                      src="https://via.placeholder.com/150"
+                      alt="qrcode"
+                    />
+                    <div className="flex flex-col justify-between p-4 leading-normal">
+                      <p className="mb-2 text-lg font-bold tracking-tight text-gray-900">
+                        Shortened URL #3
+                      </p>
+                      <p className="mb-3 font-bold text-blue-500 flex items-center gap-1">
+                        Example of a shortened link
+                        <FaExternalLinkAlt />
+                      </p>
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <span>27.11.2024</span>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><FaRegCopy /> Copy </button>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><MdDeleteSweep /> Delete</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 4 */}
+                  <div className="h-[80%] flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row">
+                    <img
+                      className="h-12 md:h-auto sm:w-28 p-2"
+                      src="https://via.placeholder.com/150"
+                      alt="qrcode"
+                    />
+                    <div className="flex flex-col justify-between p-4 leading-normal">
+                      <p className="mb-2 text-lg font-bold tracking-tight text-gray-900">
+                        Shortened URL #4
+                      </p>
+                      <p className="mb-3 font-bold text-blue-500 flex items-center gap-1">
+                        Example of a shortened link
+                        <FaExternalLinkAlt />
+                      </p>
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <span>27.11.2024</span>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><FaRegCopy /> Copy </button>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><MdDeleteSweep /> Delete</button>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  {/* Card 5 */}
+                  <div className="h-[80%] flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row">
+                    <img
+                      className="h-12 md:h-auto sm:w-28 p-2"
+                      src="https://via.placeholder.com/150"
+                      alt="qrcode"
+                    />
+                    <div className="flex flex-col justify-between p-4 leading-normal">
+                      <p className="mb-2 text-lg font-bold tracking-tight text-gray-900">
+                        Shortened URL #5
+                      </p>
+                      <p className="mb-3 font-bold text-blue-500 flex items-center gap-1">
+                        Example of a shortened link
+                        <FaExternalLinkAlt />
+                      </p>
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <span>27.11.2024</span>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><FaRegCopy /> Copy </button>
+                        <span className="text-black">|</span>
+                        <button className="flex items-center gap-2"><MdDeleteSweep /> Delete</button>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
               </div>
 
 
 
               {/* ucuncu Kutu */}
-              <div className="w-full h-[20%] bg-gray-300 rounded-lg shadow-md"></div>
+              <div className="w-full h-[15%] bg-white/50 rounded-lg shadow-md flex items-center justify-between p-4">
+                {/* Sol Taraf */}
+                <div className="text-white font-bold text-lg pl-8 w-[50%]">
+                  <img src="./logo.png" alt="" className="w-[40%]"/>
+                </div>
+
+                {/* Sağ Taraf */}
+                <div className="flex items-center gap-4 text-white font-bold text-lg pr-8">
+                  <span>About</span>
+                  <span>|</span>
+                  <span>Privacy Policy</span>
+                  <span>|</span>
+                  <span className="flex items-center gap-1">Donation <CiCoffeeCup className="text-xl" /> </span>
+                </div>
+              </div>
+
+
+
             </div>
           </div>
         </div>
