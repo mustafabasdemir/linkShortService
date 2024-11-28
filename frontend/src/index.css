@@ -13,6 +13,7 @@ body {
   position: relative;
 }
 
+
 body::before {
   content: "";
   position: absolute;
@@ -20,9 +21,11 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Siyah filtre, opaklık ayarı */
+  background-color: rgba(0, 0, 0, 0.5); /* Siyah filtre, opaklık ayarı */
   z-index: -1; /* Bu katman body'nin arkasında kalır */
 }
+
+
 
 /* Custom scrollbar styles */
 .custom-scrollbar::-webkit-scrollbar {
