@@ -1,11 +1,26 @@
+import React from 'react';
 import { FaLink } from "react-icons/fa";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { FaRegCopy } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
 import { CiCoffeeCup } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 
 function App() {
+
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    // Oturum kapatma işlemi (isteğe bağlı)
+    // Örneğin, token temizlemek:
+    // localStorage.removeItem('authToken');
+    
+    // Giriş ekranına yönlendirme
+    navigate('/login');
+  };
+
+
   return (
     <>
       <div className="h-screen flex items-center justify-center">
@@ -37,6 +52,7 @@ function App() {
                   <button
                     type="button"
                     class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 mt-8 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                    onClick={handleSignOut}
                   >
                     Sign Out
                   </button>
