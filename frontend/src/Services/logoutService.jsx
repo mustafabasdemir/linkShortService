@@ -4,7 +4,7 @@ import showAlert from "../components/alerts/alert.jsx";
 
 const API_URL = "http://localhost:5025/api/User/logout";
 
-export const logoutService = async () => {
+export const LogoutService = async () => {
   try {
     const token = sessionStorage.getItem('token');
     if (!token) {

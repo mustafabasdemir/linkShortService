@@ -8,6 +8,7 @@ using LinkShortener.Service;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using LinkShortener.Services.ErrorHandling;
+using LinkShortener.Api.Filters;
 
 namespace LinkShortener.Api.Controllers
 {
@@ -32,13 +33,10 @@ namespace LinkShortener.Api.Controllers
         // Kullanıcı Listeleme
         [HttpGet]
         [Authorize]
+        [ServiceFilter(typeof(ValidateUserTokenFilter))]
         public async Task<IActionResult> GetAll()
         {
-            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-               ExceptionHelper.ThrowError(ErrorMessages.UserNotFound);
-            }
+            
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);
         }
@@ -70,6 +68,8 @@ namespace LinkShortener.Api.Controllers
 
 
         [HttpGet("{userId}/links")]
+        [Authorize]
+        [ServiceFilter(typeof(ValidateUserTokenFilter))]
         public async Task<IActionResult> GetLinksByUserId(int userId)
         {
             var userLinks = await _userService.GetLinksByUserIdAsync(userId);

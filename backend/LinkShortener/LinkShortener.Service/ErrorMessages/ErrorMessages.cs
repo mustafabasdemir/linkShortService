@@ -15,6 +15,7 @@
         public static readonly ErrorDetail ExpiredToken = new ErrorDetail(401, "Token süresi dolmuş", "error");
         public static readonly ErrorDetail InvalidTokenFormat = new ErrorDetail(400, "Geçersiz token formatı", "error");
         public static readonly ErrorDetail InvalidToken = new ErrorDetail(401, "Geçersiz Yanlış token", "error");
+        public static readonly ErrorDetail FoundToken = new ErrorDetail(401, "Token Bulunamadı", "error");
         public static readonly ErrorDetail InvalidPassword = new ErrorDetail(400, "Geçersiz şifre", "error");
 
     }

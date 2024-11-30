@@ -1,10 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { LogoutService } from "../../Services/LogoutService";
+
 const ProfileBox = () => {
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    console.log("Çıkış yapıldı");
-    navigate("/login");
+  const handleSignOut = async () => {
+    try {
+      await  LogoutService();  
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (

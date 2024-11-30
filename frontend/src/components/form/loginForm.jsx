@@ -13,7 +13,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Formun sayfayı yeniden yüklemesini engeller
+    e.preventDefault(); //yenıden yuklenmeyı engelle
     setLoading(true);
 
     try {

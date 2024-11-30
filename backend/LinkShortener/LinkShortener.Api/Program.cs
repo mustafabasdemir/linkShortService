@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using LinkShortener.Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,7 +98,7 @@ builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddMemoryCache(); //token cache için kullanacgim
 builder.Services.AddScoped<TokenCacheService>();
-
+builder.Services.AddScoped<ValidateUserTokenFilter>();
 
 
 builder.Services.AddControllers();
