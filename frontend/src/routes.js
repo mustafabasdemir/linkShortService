@@ -1,7 +1,6 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/LoginPage'; // Yeni bileşeni ekliyoruz
-import HomePage from './App'; // Doğru dosya yolu
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
 
 const AppRoutes = () => {
   return (
@@ -9,10 +8,10 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage />} /> 
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );
 };
 
-export default AppRoutes; 
+export default AppRoutes;

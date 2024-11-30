@@ -4,6 +4,10 @@ using LinkShortener.Service.Interfaces;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using LinkShortener.Core.DTOs;
+using LinkShortener.Service;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using LinkShortener.Services.ErrorHandling;
 
 namespace LinkShortener.Api.Controllers
 {
@@ -12,21 +16,29 @@ namespace LinkShortener.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly ITokenService _tokenService;
+        private readonly TokenCacheService _tokenCacheService;
         private readonly IUserService _userService;
         private readonly INotificationService _notificationService; // NotificationService'i burada enjekte ettik
 
         // Constructor'a NotificationService'i ekliyoruz
-        public UserController(ITokenService tokenService, IUserService userService, INotificationService notificationService)
+        public UserController(ITokenService tokenService, IUserService userService, INotificationService notificationService, TokenCacheService tokenCacheService)
         {
             _tokenService = tokenService;
             _userService = userService;
-            _notificationService = notificationService; // NotificationService'in bağımlılığını alıyoruz
+            _notificationService = notificationService; 
+            _tokenCacheService = tokenCacheService;
         }
 
         // Kullanıcı Listeleme
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+               ExceptionHelper.ThrowError(ErrorMessages.UserNotFound);
+            }
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);
         }
@@ -103,8 +115,24 @@ namespace LinkShortener.Api.Controllers
             await _userService.SaveLoginHistoryAsync(user.Id, ipAddress, userAgent);
 
             var token = _tokenService.GenerateToken(user);
+            _tokenCacheService.SetToken($"UserToken_{user.Id}", token);
+            var decodeToken = _tokenService.DecodeToken(token);
 
-            return Ok(new { Token = token });
+            return Ok(new { Token = token, DecodeToken = decodeToken });
+        }
+
+
+        [HttpPost("logout")]
+        [Authorize]
+        public IActionResult Logout([FromServices] TokenCacheService tokenCacheService)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                tokenCacheService.RemoveToken(userId);
+            }
+
+            return Ok("Çıkış yapıldı.");
         }
 
         // Token doğrulama (JWT)
