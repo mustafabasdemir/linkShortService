@@ -1,7 +1,7 @@
 import { FaLink } from "react-icons/fa";
 import { useState } from "react";
-import { CreateShortLinkService } from "../../Services/AuthLinkShortService";
-import LinkCard from "../linkCard/linkCard";
+import { CreateShortLinkService } from "../../Services/CreateShortLinkService";
+
 
 const LinkForm = () => {
   const [longUrl, setLongUrl] = useState(""); 

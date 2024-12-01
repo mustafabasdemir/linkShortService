@@ -5,8 +5,7 @@ const API_URL = "http://localhost:5025/api/Link";
 
 export const CreateShortLinkService = async (originalUrl, userId) => {
   try {
-    const userID = sessionStorage.getItem("userId");
-
+    const userID = userId !== 14 ? sessionStorage.getItem("userId") : 14;
     const response = await axios.post(API_URL, {
       id: 0, 
       originalUrl,
@@ -18,6 +17,11 @@ export const CreateShortLinkService = async (originalUrl, userId) => {
 
     if (response.status === 201) {
       showAlert("success", "Link başarıyla kısaltıldı!");
+      if (userID === 14) {
+        let cachedLinks = JSON.parse(sessionStorage.getItem("cachedLinks")) || [];
+        cachedLinks.push(response.data);
+        sessionStorage.setItem("cachedLinks", JSON.stringify(cachedLinks)); 
+      }
       return response.data; 
     }
   } catch (error) {
@@ -25,4 +29,10 @@ export const CreateShortLinkService = async (originalUrl, userId) => {
     showAlert("error", "Link kısaltma işlemi başarısız oldu!");
     return null;
   }
+};
+
+
+export const getCachedLinks = () => {
+  const cachedLinks = JSON.parse(sessionStorage.getItem("cachedLinks")) || [];
+  return cachedLinks;
 };

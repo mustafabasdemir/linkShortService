@@ -1,5 +1,6 @@
 import axios from "axios";
 import showAlert from "../components/alerts/alert.jsx";
+import { Navigate } from "react-router-dom";
 
 const API_URL = "http://localhost:5025/api/User"; 
 export const GetLinksUserIdService = async () => {
@@ -32,6 +33,7 @@ export const GetLinksUserIdService = async () => {
       showAlert("error", "Bu kullanıcıya ait link bulunamadı.");
     } else {
       showAlert("error", "Linkleri alma işlemi başarısız.");
+      
     }
     return null;
   }

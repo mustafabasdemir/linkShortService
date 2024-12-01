@@ -39,6 +39,10 @@ const LoginForm = () => {
     }
   };
 
+  const handleContinueWithoutSignUp = () => {
+    navigate("/NoEntry");
+  };
+
   return (
     <>
       <form onSubmit={handleLogin}>
@@ -99,7 +103,19 @@ const LoginForm = () => {
           </div>
         </div>
         {error && <p className="text-red-500 mt-4">{error}</p>}
+        <div className="text-center mt-4">
+        <p className="text-white">
+          Üye olmadan devam etmek isterseniz,{" "}
+          <span
+            className="text-blue-500 cursor-pointer hover:underline"
+            onClick={handleContinueWithoutSignUp}
+          >
+            buraya tıklayabilirsiniz.
+          </span>
+        </p>
+      </div>
       </form>
+      
     </>
   );
 };

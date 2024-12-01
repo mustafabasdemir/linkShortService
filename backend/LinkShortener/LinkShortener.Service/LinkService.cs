@@ -28,7 +28,7 @@ public class LinkService : ILinkService
         return links;
     }
 
-    // Link ekle
+    // Link ekle kayitli kullanicilar
     public async Task<Link> CreateLinkAsync(Link link)
     {
         if (string.IsNullOrEmpty(link.OriginalUrl))
@@ -43,15 +43,19 @@ public class LinkService : ILinkService
         //qr kod 
         string qrCodeBase64 = GenerateQrCode(link.ShortUrl);
         link.QrCodeImage = qrCodeBase64;
-        try
+        if(link.UserId!=14)
         {
-            _context.Links.Add(link);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Links.Add(link);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.ThrowError(ErrorMessages.InternalServerError);
+            }
         }
-        catch (Exception ex)
-        {
-            ExceptionHelper.ThrowError(ErrorMessages.InternalServerError);
-        }
+        
 
         return link;
     }

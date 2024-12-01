@@ -5,16 +5,23 @@ import { MdDeleteSweep } from "react-icons/md";
 import { GetLinksUserIdService } from "../../Services/GetLinksUserIdService";
 import dayjs from "dayjs";
 import { LinkDeleteService } from "../../Services/LinkDeleteService";
+import { LogoutService } from "../../Services/LogoutService";
 import showAlert from "../alerts/alert";
+import { useNavigate } from "react-router-dom";
 
 
 const LinkCard = () => {
   const [links, setLinks] = useState([]);
+  const navigate = useNavigate();
 
   const fetchLinks = async () => {
-    const fetchedLinks = await GetLinksUserIdService(); // Kullanıcı linklerini al
+    const fetchedLinks = await GetLinksUserIdService(); 
     if (fetchedLinks) {
       setLinks(fetchedLinks);
+    }else if(fetchedLinks==null)
+    {
+      await LogoutService();
+      navigate("/login");
     }
   };
 
@@ -67,7 +74,7 @@ const LinkCard = () => {
         links.map((link, index) => (
           <div
             key={index}
-            className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row mb-2"
+            className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row mb-2"
           >
             <img
               className="h-12 md:h-auto sm:w-28 p-0"
