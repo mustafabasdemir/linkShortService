@@ -1,6 +1,7 @@
 import { CgProfile } from "react-icons/cg";
 import { CiLock } from "react-icons/ci";
 import { LoginService } from "../../Services/LoginService";
+import { SignUpService } from "../../Services/SignUpService"; // Kayıt servisini içe aktarın
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,19 +13,27 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); //yenıden yuklenmeyı engelle
-    setLoading(true);
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
+    const response = await LoginService(email, password);
+
+    if (response) {
+      navigate("/home");
+    }
+  };
+
+  const handleSignUp = async () => {
+    setLoading(true);
     try {
-      const response = await LoginService(email, password);
+      const response = await SignUpService(email, password);
       if (response) {
-        navigate("/home");
+        navigate("/"); //girise yınlendır
       } else {
-        setError("Login işlemi başarısız. Lütfen bilgilerinizi kontrol edin.");
+        setError("Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin.");
       }
     } catch (err) {
-      setError(err || "bir hata var");
+      setError(err.message || "Bir hata oluştu.");
     } finally {
       setLoading(false);
     }
@@ -32,7 +41,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <div className="text-2xl text-blue-800 font-bold capitalize text-center mb-2">
           <img src="/logo.png" alt="" />
         </div>
@@ -59,7 +68,7 @@ const LoginForm = () => {
               <input
                 className="w-full placeholder:capitalize px-8 py-1.5 outline-blue-800"
                 type="Password"
-                placeholder="enter password"
+                placeholder="Enter Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -72,14 +81,24 @@ const LoginForm = () => {
             </div>
           </div>
           <div className="flex space-x-4 mt-4">
-            <button className="bg-blue-800 text-xl text-white font-medium uppercase p-2 rounded-lg w-full opacity-90 hover:opacity-100">
+            <button
+              type="submit"
+              className="bg-blue-800 text-xl text-white font-medium uppercase p-2 rounded-lg w-full opacity-90 hover:opacity-100"
+              disabled={loading}
+            >
               Login
             </button>
-            <button className="bg-green-800 text-xl text-white font-medium uppercase p-2 rounded-lg w-full opacity-90 hover:opacity-100">
+            <button
+              type="button"
+              onClick={handleSignUp}
+              className="bg-green-800 text-xl text-white font-medium uppercase p-2 rounded-lg w-full opacity-90 hover:opacity-100"
+              disabled={loading}
+            >
               Sign Up
             </button>
           </div>
         </div>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
       </form>
     </>
   );

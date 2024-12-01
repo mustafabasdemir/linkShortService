@@ -3,7 +3,7 @@ import { CiCoffeeCup } from "react-icons/ci";
 const FooterBox = () => {
   return (
     <>
-      <div className="w-full h-[15%] bg-white/50 rounded-lg shadow-md flex items-center justify-between p-4">
+      <div className="w-full h-[10%] bg-white/50 rounded-lg shadow-md flex items-center justify-between p-4">
         {/* Sol Taraf */}
         <div className="text-white font-bold text-lg pl-8 w-[50%]">
           <img src="./logo.png" alt="" className="w-[40%]" />

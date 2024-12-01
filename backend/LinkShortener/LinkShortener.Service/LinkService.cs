@@ -79,7 +79,7 @@ public class LinkService : ILinkService
                 .Replace("+", "")
                 .Replace("/", "")
                 .Replace("=", "")
-                .Substring(0, 8); //kısa url 8 karakter olsun hash şle
+                .Substring(0, 6); //kısa url 6 karakter olsun hash şle
         }
     }
 

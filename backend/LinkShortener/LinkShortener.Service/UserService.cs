@@ -62,6 +62,7 @@ namespace LinkShortener.Core.Services
         {
             var userLinks = await _context.Links
                 .Where(link => link.UserId == userId)
+                .OrderByDescending(link => link.CreatedUrl) 
                 .ToListAsync();
 
             if (userLinks == null || !userLinks.Any())
