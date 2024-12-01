@@ -1,7 +1,7 @@
 import { CgProfile } from "react-icons/cg";
 import { CiLock } from "react-icons/ci";
 import { LoginService } from "../../Services/LoginService";
-import { SignUpService } from "../../Services/SignUpService"; // Kayıt servisini içe aktarın
+import { SignUpService } from "../../Services/SignUpService"; 
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

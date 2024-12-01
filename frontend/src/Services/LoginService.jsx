@@ -13,10 +13,10 @@ export const LoginService = async (email, password) => {
       sessionStorage.setItem("userEmail", response.data.decodeToken.email);
 
       showAlert("success", "Başarılı Giriş Yapıldı");
-      return response.data; // Başarılı yanıt
+      return response.data; 
     }
   } catch (error) {
     showAlert("error", "İşlem Başarısız");
-    return null; // Hata durumu
+    return null; 
   }
 };
