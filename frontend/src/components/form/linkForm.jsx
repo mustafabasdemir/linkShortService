@@ -1,20 +1,29 @@
 import { FaLink } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CreateShortLinkService } from "../../Services/CreateShortLinkService";
+import MainContext from "../../contexts/MainContext";
+import { GetLinksUserIdService } from "../../Services/GetLinksUserIdService";
 
 
 const LinkForm = () => {
   const [longUrl, setLongUrl] = useState(""); 
   const [loading, setLoading] = useState(false); 
+const {setItems, setItemLoading} = useContext(MainContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Formun yeniden yüklenmesini engelle
     setLoading(true);
 
     try {
+      setItemLoading(true);
       const userId = sessionStorage.getItem("userId"); 
       const response = await CreateShortLinkService(longUrl, userId); 
 
+        const fetchedLinks = await GetLinksUserIdService(); 
+        if (fetchedLinks) {
+          setItems(fetchedLinks);
+        }
+        setItemLoading(false);
     } catch (error) {
       console.error("Link kısaltma hatası:", error);
     } finally {

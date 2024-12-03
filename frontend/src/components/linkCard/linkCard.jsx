@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { FaRegCopy } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
@@ -8,21 +8,26 @@ import { LinkDeleteService } from "../../Services/LinkDeleteService";
 import { LogoutService } from "../../Services/LogoutService";
 import showAlert from "../alerts/alert";
 import { useNavigate } from "react-router-dom";
+import MainContext from "../../contexts/MainContext";
 
 
 const LinkCard = () => {
   const [links, setLinks] = useState([]);
   const navigate = useNavigate();
+  const {items, setItems, setItemLoading, itemLoading} = useContext(MainContext);
 
   const fetchLinks = async () => {
+    setItemLoading(true);
     const fetchedLinks = await GetLinksUserIdService(); 
     if (fetchedLinks) {
       setLinks(fetchedLinks);
+      setItems(fetchedLinks);
     }else if(fetchedLinks==null)
     {
       await LogoutService();
       navigate("/login");
     }
+    setItemLoading(false);
   };
 
   useEffect(() => {
@@ -34,7 +39,7 @@ const LinkCard = () => {
       const result = await LinkDeleteService(id);
       if (result) {
         // Başarılıysa state'den ilgili linki çıkar
-        setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
+       fetchLinks();
         showAlert("success", "Link başarıyla silindi!");
       } else {
         showAlert("error", "Link silme başarısız.");
@@ -70,8 +75,8 @@ const LinkCard = () => {
       className="grid grid-cols-2 gap-2 mt-4 w-300px max-w-6xl h-full overflow-y-auto px-4 custom-scrollbar pb-8"
       style={{ alignSelf: "center" }}
     >
-      {links.length > 0 ? (
-        links.map((link, index) => (
+      {itemLoading ? <>yükleniyor....</> : items.length >  0? (
+        items.map((link, index) => (
           <div
             key={index}
             className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row mb-2"
