@@ -19,9 +19,9 @@ namespace LinkShortener.Api.Controllers
         private readonly ITokenService _tokenService;
         private readonly TokenCacheService _tokenCacheService;
         private readonly IUserService _userService;
-        private readonly INotificationService _notificationService; // NotificationService'i burada enjekte ettik
+        private readonly INotificationService _notificationService; 
 
-        // Constructor'a NotificationService'i ekliyoruz
+
         public UserController(ITokenService tokenService, IUserService userService, INotificationService notificationService, TokenCacheService tokenCacheService)
         {
             _tokenService = tokenService;

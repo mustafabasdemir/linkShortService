@@ -11,7 +11,7 @@ namespace LinkShortener.Core.Entities
         public int Id { get; set; } // Primary Key
         public int UserId { get; set; } // Hangi kullanıcı giriş yaptı
         public string IPAddress { get; set; } = string.Empty; // IP Adresi
-        public string DeviceType { get; set; } = string.Empty; // Cihaz Türü (örneğin, Android, iOS, Windows)
+        public string DeviceType { get; set; } = string.Empty; // Cihaz Tür
         public string BrowserInfo { get; set; } = string.Empty; // Tarayıcı Bilgisi
         public DateTime LoginTime { get; set; } = DateTime.UtcNow; // Giriş Zamanı
 

@@ -13,7 +13,7 @@ namespace LinkShortener.Core.Entities
         public string PasswordHash { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigasyon
+
         public ICollection<Link> Links { get; set; } = new List<Link>();
     }
 }

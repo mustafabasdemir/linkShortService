@@ -104,15 +104,13 @@ public class LinkService : ILinkService
     {
         using (var qrGenerator = new QRCodeGenerator())
         {
-            // QRCodeData'yı oluşturuyoruz
             var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
 
-            // QR kodu grafik olarak alıyoruz
             using (var qrCode = new QRCode(qrCodeData))
             {
                 using (var ms = new MemoryStream())
                 {
-                    // QR kodunu PNG formatında hafızaya yazıyoruz
+                    // QRkodu png 
                     qrCode.GetGraphic(20).Save(ms, System.Drawing.Imaging.ImageFormat.Png);
 
                     var qrCodeBytes = ms.ToArray();
