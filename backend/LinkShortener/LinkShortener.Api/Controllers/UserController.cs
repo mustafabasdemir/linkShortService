@@ -108,7 +108,7 @@ namespace LinkShortener.Api.Controllers
             if (hasDeviceChanged)
             {
                 //cihaz değiştiryse mail gidecek
-                _notificationService.SendDeviceChangeEmail(user.Email, ipAddress, userAgent);
+              //  _notificationService.SendDeviceChangeEmail(user.Email, ipAddress, userAgent);
             }
 
             //cihazı vt ye kaydet

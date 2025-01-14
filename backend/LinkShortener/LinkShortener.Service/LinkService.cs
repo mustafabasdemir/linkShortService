@@ -38,7 +38,7 @@ public class LinkService : ILinkService
 
         // kısa url uret
         string shortCode = GenerateShortCode(link.OriginalUrl);
-        string apiBaseUrl = "https://localhost:7256/r/";
+        string apiBaseUrl = "http://localhost:5025/r/";
         link.ShortUrl = $"{apiBaseUrl}{shortCode}";
         //qr kod 
         string qrCodeBase64 = GenerateQrCode(link.ShortUrl);
