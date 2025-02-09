@@ -11,4 +11,7 @@ React ve Tailwind CSS kullanarak modern bir arayüz tasarladığım LinkShortene
 - ✅ Cihaz Bazlı Oturum Tespiti ve Bildirimi  
 
 
+
+Project Video:
+
 [![YouTube Videosunu İzle](https://img.youtube.com/vi/AdJ5WM0qT0o/0.jpg)](https://youtu.be/AdJ5WM0qT0o?feature=shared)
